@@ -9,8 +9,15 @@ table {
 	text-align: center;
 }
 
+thead tr td {
+	text-align: center;
+	background-color: white;
+}
+
 td {
 	width: 100%;
+	border-radius: 15px;
+	background-color: #DBFAFF;
 }
 
 .username {
@@ -23,11 +30,13 @@ td {
 	margin: 3px;
 	background-color: #2E9AFE;
 	overflow: auto;
+	border-radius: 10px;
 }
 
 .chat {
 	margin: 3px;
 	background-color: #2E9AFE;
+	border-radius: 15px;
 }
 
 .messages {
@@ -39,7 +48,7 @@ td {
 .messages p {
 	padding: 10px;
 	margin: 5px;
-    background-color: #CEE3F6;
+	background-color: #DBFAFF;
 	border-radius: 5px;
 }
 
