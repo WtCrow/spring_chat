@@ -2,7 +2,7 @@ var CONNECTION_STATUS = 'connect'
 var DISCONNECTION_STATUS = 'disconnect'
 var COMMAND_UPDATE_USERS = "update_users_list", COMMAND_ONLINE_USERS_LIST = "online_users_list",
     COMMAND_NEW_MESSAGE = "new_message", CLIENT_COMMAND_NEW_MESSAGE = "new_message",
-    CLIENT_COMMAND_SET_NICKNAME = "set_nickname";
+    CLIENT_COMMAND_SET_NICKNAME = "set_nickname", COMMAND_ERROR = "error";
 
 var conn = null;
 var nickname = '';
@@ -48,13 +48,15 @@ function connect() {
             case COMMAND_NEW_MESSAGE:
                 showMessage(message['content']);
             break;
+            case COMMAND_ERROR:
+                alert(message['content']);
+            break;
         }
     };
     conn.onopen = function() {
         conn.send(JSON.stringify({'command': CLIENT_COMMAND_SET_NICKNAME, 'content': nickname}));
     };
     conn.onclose = function() {
-//        alert('Connection to server is close')
         conn = null;
     };
 }

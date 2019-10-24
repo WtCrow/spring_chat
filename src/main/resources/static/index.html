@@ -6,7 +6,7 @@
 </head>
 <body>
 <div class="username">
-    <input type="text" id="nickname_input" placeholder="Enter nickname...">
+    <input type="text" id="nickname_input" placeholder="Enter nickname..." maxlength="20">
     <button id="nickname_button">Login</button>
     <div id="nickname_label" hidden>
         <span id="nickname_span"></span>
@@ -28,7 +28,7 @@
         <div class="messages" id="messages">
         </div>
         <div class="input_message">
-            <input type="text" id="message" disabled>
+            <input type="text" id="message" disabled maxlength="100">
             <button id="send" disabled>Send</button>
         </div>
     </div>

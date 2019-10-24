@@ -29,6 +29,11 @@ public class ChatSocketHandler extends TextWebSocketHandler {
     private static final String CLIENT_COMMAND_NEW_MESSAGE = "new_message";
     private static final String CLIENT_COMMAND_SET_NICKNAME = "set_nickname";
 
+    private static final String COMMAND_ERROR = "error";
+
+    private static final String ERROR_MAX_LENGTH_NICKNAME = "max length nickname = 20";
+    private static final String ERROR_MAX_LENGTH_MESSAGE = "max length message = 100";
+
     // All connected sessions
     private Map<WebSocketSession, String> sessions = new HashMap<>();
 
@@ -82,6 +87,16 @@ public class ChatSocketHandler extends TextWebSocketHandler {
         * */
         Gson gson = new Gson();
 
+        if (nickname.length() > 20) {
+            String errorJson = gson.toJson(
+                    new ServerMessage(ChatSocketHandler.COMMAND_ERROR, ChatSocketHandler.ERROR_MAX_LENGTH_NICKNAME));
+            try {
+                session.sendMessage(new TextMessage(errorJson));
+                session.close();
+            } catch (IOException e) {}
+            return;
+        }
+
         Connection connection = new Connection(nickname, ChatSocketHandler.STATUS_CONNECTION);
         ServerMessage serverMessage = new ServerMessage(ChatSocketHandler.COMMAND_UPDATE_USERS, connection);
         this.sendAllUsers(serverMessage);
@@ -109,6 +124,15 @@ public class ChatSocketHandler extends TextWebSocketHandler {
         * Save message and send all users
         * */
         Gson gson = new Gson();
+
+        if (message.length() > 100) {
+            String errorJson = gson.toJson(
+                    new ServerMessage(ChatSocketHandler.COMMAND_ERROR, ChatSocketHandler.ERROR_MAX_LENGTH_MESSAGE));
+            try {
+                session.sendMessage(new TextMessage(errorJson));
+            } catch (IOException e) {}
+            return;
+        }
 
         Message newMessage = new Message(this.sessions.get(session), message);
         MessagesDAO.saveMessage(newMessage);

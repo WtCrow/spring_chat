@@ -20,7 +20,7 @@ public class MessagesDAO {
         List messagesList = sessionObj.createQuery("FROM Message m ORDER BY m.sending_date DESC").setMaxResults(count).list();
         ArrayList<Message> messages = new ArrayList<Message>();
         for (Object msg: messagesList) {
-            messages.add(((Message)msg));
+            messages.add(0, ((Message)msg));
         }
         sessionObj.close();
         return messages;
