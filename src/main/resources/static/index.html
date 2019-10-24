@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login in chat</title>
+    <link href="style.css" rel="stylesheet">
+</head>
+<body>
+<div class="username">
+    <input type="text" id="nickname_input" placeholder="Enter nickname...">
+    <button id="nickname_button">Login</button>
+    <div id="nickname_label" hidden>
+        <span id="nickname_span"></span>
+    </div>
+</div>
+<main>
+    <div class="list_users">
+        <table>
+            <thead>
+            <tr>
+                <td>Users</td>
+            </tr>
+            </thead>
+            <tbody id="users">
+            </tbody>
+        </table>
+    </div>
+    <div class="chat">
+        <div class="messages" id="messages">
+        </div>
+        <div class="input_message">
+            <input type="text" id="message" disabled>
+            <button id="send" disabled>Send</button>
+        </div>
+    </div>
+</main>
+</body>
+<script src="/webjars/jquery/jquery.min.js"></script>
+<script src="/script.js"></script>
+</html>
