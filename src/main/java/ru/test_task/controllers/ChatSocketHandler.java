@@ -31,7 +31,7 @@ public class ChatSocketHandler extends TextWebSocketHandler {
 
     private static final String COMMAND_ERROR = "error";
 
-    private static final String ERROR_MAX_LENGTH_NICKNAME = "max length nickname = 20";
+    private static final String ERROR_MAX_LENGTH_NICKNAME = "nickname max length = 20, min length = 1";
     private static final String ERROR_MAX_LENGTH_MESSAGE = "max length message = 100";
 
     // All connected sessions
@@ -87,7 +87,7 @@ public class ChatSocketHandler extends TextWebSocketHandler {
         * */
         Gson gson = new Gson();
 
-        if (nickname.length() > 20) {
+        if (nickname.length() > 20 || nickname.length() == 0) {
             String errorJson = gson.toJson(
                     new ServerMessage(ChatSocketHandler.COMMAND_ERROR, ChatSocketHandler.ERROR_MAX_LENGTH_NICKNAME));
             try {

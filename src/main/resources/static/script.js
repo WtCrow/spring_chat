@@ -14,6 +14,8 @@ $(function () {
 });
 
 function connect() {
+    if ($("#nickname_input").val() == "") return;
+
     $("#nickname_input").hide();
     $("#nickname_button").hide();
 
@@ -62,7 +64,7 @@ function connect() {
 }
 
 function sendMessage() {
-    if ($("#message").val() == "") { return; }
+    if ($("#message").val() == "") return;
     conn.send(JSON.stringify({'command': CLIENT_COMMAND_NEW_MESSAGE, 'content': $("#message").val()}));
     $("#message").val('');
 }
