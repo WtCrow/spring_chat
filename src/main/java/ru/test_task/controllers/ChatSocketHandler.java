@@ -123,8 +123,9 @@ public class ChatSocketHandler extends TextWebSocketHandler {
         /*
         * Save message and send all users
         * */
-        Gson gson = new Gson();
+        if (message.length() == 0) { return; }
 
+        Gson gson = new Gson();
         if (message.length() > 100) {
             String errorJson = gson.toJson(
                     new ServerMessage(ChatSocketHandler.COMMAND_ERROR, ChatSocketHandler.ERROR_MAX_LENGTH_MESSAGE));
@@ -132,6 +133,15 @@ public class ChatSocketHandler extends TextWebSocketHandler {
                 session.sendMessage(new TextMessage(errorJson));
             } catch (IOException e) {}
             return;
+        }
+
+        Map<String, String> symbols = new HashMap<>();
+        symbols.put("&", "&amp;");
+        symbols.put("<", "&lt;");
+        symbols.put(">", "&gt;");
+
+        for (Map.Entry<String, String> symbol : symbols.entrySet()) {
+            message = message.replace(symbol.getKey(), symbol.getValue());
         }
 
         Message newMessage = new Message(this.sessions.get(session), message);

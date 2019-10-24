@@ -19,7 +19,7 @@ function connect() {
 
     nickname = $("#nickname_input").val();
     $("#nickname_label").removeAttr('hidden');
-    $("#nickname_span").append("Your nickname: " + nickname);
+    $("#nickname_span").append("<b>Your nickname: " + nickname + "</b>");
     $("#message").removeAttr('disabled');
     $("#send").removeAttr('disabled');
 
@@ -62,12 +62,13 @@ function connect() {
 }
 
 function sendMessage() {
+    if ($("#message").val() == "") { return; }
     conn.send(JSON.stringify({'command': CLIENT_COMMAND_NEW_MESSAGE, 'content': $("#message").val()}));
     $("#message").val('');
 }
 
 function showMessage(message) {
-    $("#messages").append("<p>" + message.author + ': ' + message.message + "</p>");
+    $("#messages").append("<p><b>" + message.author + ':</b> ' + message.message + "</p>");
 }
 
 function setOnlineUsers() {

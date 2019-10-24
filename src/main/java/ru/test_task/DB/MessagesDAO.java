@@ -34,5 +34,3 @@ public class MessagesDAO {
         session.close();
     }
 }
-
-
