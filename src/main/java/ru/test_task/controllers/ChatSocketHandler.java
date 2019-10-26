@@ -81,6 +81,9 @@ public class ChatSocketHandler extends TextWebSocketHandler {
             return;
         }
 
+        String cleanedContent = this.cleanXSS(clientMessageMessage.getContent());
+        clientMessageMessage.setContent(cleanedContent);
+
         // Check client command
         switch (clientMessageMessage.getCommand()) {
             case ClientMessage.CLIENT_COMMAND_SET_NICKNAME:
@@ -158,15 +161,6 @@ public class ChatSocketHandler extends TextWebSocketHandler {
             return;
         }
 
-        // protected of XSS
-        Map<String, String> symbols = new HashMap<>();
-        symbols.put("&", "&amp;");
-        symbols.put("<", "&lt;");
-        symbols.put(">", "&gt;");
-        for (Map.Entry<String, String> symbol : symbols.entrySet()) {
-            message = message.replace(symbol.getKey(), symbol.getValue());
-        }
-
         // save message to DB
         Author author = this.sessions.get(session);
         Message newMessage = new Message(author, message);
@@ -190,5 +184,19 @@ public class ChatSocketHandler extends TextWebSocketHandler {
                 user.sendMessage(new TextMessage(json));
             } catch (IOException e) {}
         }
+    }
+
+    private String cleanXSS(String str) {
+        /*
+         * Protected of XSS
+         * */
+        Map<String, String> symbols = new HashMap<>();
+        symbols.put("&", "&amp;");
+        symbols.put("<", "&lt;");
+        symbols.put(">", "&gt;");
+        for (Map.Entry<String, String> symbol : symbols.entrySet()) {
+            str = str.replace(symbol.getKey(), symbol.getValue());
+        }
+        return str;
     }
 }
