@@ -49,6 +49,7 @@ td {
 .messages p {
 	padding: 10px;
 	margin: 5px;
+	margin-left: 15px;
 	background-color: #DBFAFF;
 	border-radius: 5px;
 }

@@ -2,7 +2,6 @@ package ru.test_task.DB;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-import ru.test_task.models.db_models.Message;
 
 
 public class SessionFactoryUtil {
@@ -17,7 +16,11 @@ public class SessionFactoryUtil {
     public static SessionFactory getInstance() {
         if (instance == null) {
             Configuration configuration = new Configuration().configure();
-            configuration.addAnnotatedClass(Message.class);
+
+            configuration.setProperty("hibernate.connection.url", System.getenv("DB_URL"));
+            configuration.setProperty("hibernate.connection.username", System.getenv("DB_USER"));
+            configuration.setProperty("hibernate.connection.password", System.getenv("DB_PASSWORD"));
+
             instance = configuration.buildSessionFactory();
         }
         return instance;
