@@ -4,18 +4,17 @@
 
 <hibernate-configuration>
 <session-factory>
-
     <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
     <property name="hibernate.connection.url">jdbc:postgresql://localhost/chat</property>
     <property name="hibernate.connection.username">postgres</property>
     <property name="hibernate.connection.password">passwd123</property>
-
     <property name="show_sql">true</property>
-
     <property name="hbm2ddl.auto">validate</property>
+    <property name="hibernate.connectNotification.autocommit">true</property>
+    <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQL9Dialect</property>
+    <property name="hibernate.temp.use_jdbc_metadata_defaults">false</property>
 
-    <property name="hibernate.connection.autocommit">true</property>
-
-    <mapping class="ru.test_task.models.Message"/>
+    <mapping class="ru.test_task.models.db_models.Author"/>
+    <mapping class="ru.test_task.models.db_models.Message"/>
 </session-factory>
 </hibernate-configuration>

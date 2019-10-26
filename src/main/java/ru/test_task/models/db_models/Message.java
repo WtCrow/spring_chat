@@ -1,4 +1,4 @@
-package ru.test_task.models;
+package ru.test_task.models.db_models;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -16,16 +16,17 @@ public class Message {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @Column(name="author")
-    private String author;
+    @ManyToOne
+    @JoinColumn(name = "author_id", nullable = false)
+    private Author author;
 
-    @Column(name="message")
+    @Column(name="message", length = 140)
     private String message;
 
     @Column(name="sending_date")
     private LocalDateTime sending_date;
 
-    public Message(String author, String message) {
+    public Message(Author author, String message) {
         this.author = author;
         this.message = message;
         this.sending_date = LocalDateTime.now();
@@ -33,11 +34,11 @@ public class Message {
 
     public Message() {}
 
-    public String getAuthor() {
+    public Author getAuthor() {
         return author;
     }
 
-    public void setAuthor(String author) {
+    public void setAuthor(Author author) {
         this.author = author;
     }
 

@@ -1,6 +1,11 @@
+CREATE TABLE chat_author (
+	id serial PRIMARY KEY,
+	name VARCHAR(30) UNIQUE
+);
+
 CREATE TABLE chat_message (
-	id serial primary key;
-	author varchar(20);
-	message varchar(100);
-	sending_date timestamp;
-)
+	id serial PRIMARY KEY,
+	author_id INTEGER REFERENCES chat_author (id),
+	message VARCHAR(140),
+	sending_date TIMESTAMP
+);

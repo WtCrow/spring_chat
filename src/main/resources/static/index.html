@@ -5,11 +5,14 @@
     <link href="style.css" rel="stylesheet">
 </head>
 <body>
-<div class="username">
-    <input type="text" id="nickname_input" placeholder="Enter nickname..." maxlength="20">
-    <button id="nickname_button">Login</button>
-    <div id="nickname_label" hidden>
-        <span id="nickname_span"></span>
+<div class="top_panel">
+    <a href="https://github.com/WtCrow/spring_chat" target=" _blank">Source code</a>
+    <div class="username">
+        <input type="text" id="nickname_input" placeholder="Enter nickname..." maxlength="30">
+        <button id="nickname_button">Login</button>
+        <div id="nickname_label" hidden>
+            <span id="nickname_span"></span>
+        </div>
     </div>
 </div>
 <main>
@@ -28,7 +31,7 @@
         <div class="messages" id="messages">
         </div>
         <div class="input_message">
-            <input type="text" id="message" disabled maxlength="100">
+            <input type="text" id="message" disabled maxlength="140">
             <button id="send" disabled>Send</button>
         </div>
     </div>

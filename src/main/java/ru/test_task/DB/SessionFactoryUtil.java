@@ -1,32 +1,25 @@
 package ru.test_task.DB;
 
 import org.hibernate.SessionFactory;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
-import ru.test_task.models.Message;
+import ru.test_task.models.db_models.Message;
 
 
-class SessionFactoryUtil {
+public class SessionFactoryUtil {
     /*
-    * Class for create session with DB
+    * Class for create session factory with DB
     * */
 
-    private static SessionFactory sessionFactory;
+    private static SessionFactory instance;
 
     private SessionFactoryUtil() {}
 
-    public static SessionFactory getSessionFactory() {
-        if (sessionFactory == null) {
-            try {
-                Configuration configuration = new Configuration().configure();
-                configuration.addAnnotatedClass(Message.class);
-                StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties());
-                sessionFactory = configuration.buildSessionFactory(builder.build());
-
-            } catch (Exception e) {
-                System.out.println("Исключение!" + e);
-            }
+    public static SessionFactory getInstance() {
+        if (instance == null) {
+            Configuration configuration = new Configuration().configure();
+            configuration.addAnnotatedClass(Message.class);
+            instance = configuration.buildSessionFactory();
         }
-        return sessionFactory;
+        return instance;
     }
 }

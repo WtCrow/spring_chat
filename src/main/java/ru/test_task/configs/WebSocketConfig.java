@@ -9,6 +9,6 @@ import ru.test_task.controllers.ChatSocketHandler;
 @EnableWebSocket
 public class WebSocketConfig implements WebSocketConfigurer {
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(new ChatSocketHandler(), "/chat");
+        registry.addHandler(new ChatSocketHandler(), "/chat");  // endpoint for chat ws
     }
 }

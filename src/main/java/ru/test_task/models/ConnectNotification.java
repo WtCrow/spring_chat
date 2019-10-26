@@ -1,18 +1,17 @@
 package ru.test_task.models;
 
 
-public class Connection {
+public class ConnectNotification {
     /*
      * Model for notification about connect/disconnect user
      * */
-
     public static final String STATUS_CONNECTION = "connect";
     public static final String STATUS_DISCONNECTION = "disconnect";
 
     private String nickname;
     private String status;
 
-    public Connection(String nickname, String status) {
+    public ConnectNotification(String nickname, String status) {
         this.nickname = nickname;
         this.status = status;
     }

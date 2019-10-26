@@ -5,32 +5,47 @@ import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import ru.test_task.models.Message;
+import ru.test_task.models.db_models.Message;
 
 
 public class MessagesDAO {
     /*
-    * Simple DAO for Message class
+    * DAO for Message class
+    *
+    * --- CRUD incomplete
     * */
 
-    public static List<Message> getMessages(int count) {
-        Session sessionObj = null;
-        sessionObj = SessionFactoryUtil.getSessionFactory().openSession();
-        sessionObj.beginTransaction();
-        List messagesList = sessionObj.createQuery("FROM Message m ORDER BY m.sending_date DESC").setMaxResults(count).list();
-        ArrayList<Message> messages = new ArrayList<Message>();
+    public static List<Message> readMessages(int count) {
+        /*
+         * Return list contain count last added messages
+         * */
+        Session session = SessionFactoryUtil.getInstance().openSession();
+        Transaction transaction = session.beginTransaction();
+
+        List messagesList = session
+                .createQuery("FROM Message m ORDER BY m.sending_date DESC")
+                .setMaxResults(count)
+                .list();
+
+        ArrayList<Message> messages = new ArrayList<>();
         for (Object msg: messagesList) {
             messages.add(0, ((Message)msg));
         }
-        sessionObj.close();
+
+        transaction.commit();
+        session.close();
         return messages;
     }
 
-    public static void saveMessage(Message message) {
-        Session session = SessionFactoryUtil.getSessionFactory().openSession();
-        Transaction tx1 = session.beginTransaction();
+    public static Message createMessage(Message message) {
+        /*
+        * Save object Message and return this object
+        * */
+        Session session = SessionFactoryUtil.getInstance().openSession();
+        Transaction transaction = session.beginTransaction();
         session.save(message);
-        tx1.commit();
+        transaction.commit();
         session.close();
+        return message;
     }
 }
