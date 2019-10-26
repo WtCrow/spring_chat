@@ -92,7 +92,6 @@ public class ChatSocketHandler extends TextWebSocketHandler {
                     new ServerMessage(ChatSocketHandler.COMMAND_ERROR, ChatSocketHandler.ERROR_MAX_LENGTH_NICKNAME));
             try {
                 session.sendMessage(new TextMessage(errorJson));
-                session.close();
             } catch (IOException e) {}
             return;
         }
