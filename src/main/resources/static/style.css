@@ -32,12 +32,14 @@ td {
 	background-color: #2E9AFE;
 	overflow: auto;
 	border-radius: 10px;
+	border: 5px solid #81BEF7;
 }
 
 .chat {
 	margin: 3px;
 	background-color: #2E9AFE;
 	border-radius: 15px;
+	border: 5px solid #81BEF7;
 }
 
 .messages {

@@ -1,4 +1,4 @@
-package ru.test_task.controllers;
+package ru.chat.controllers;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -8,14 +8,15 @@ import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
-import ru.test_task.DB.AuthorDAO;
-import ru.test_task.DB.MessagesDAO;
-import ru.test_task.custom_serialization.MessageSerializer;
-import ru.test_task.models.ClientMessage;
-import ru.test_task.models.ConnectNotification;
-import ru.test_task.models.db_models.Author;
-import ru.test_task.models.db_models.Message;
-import ru.test_task.models.ServerMessage;
+import org.springframework.web.util.HtmlUtils;
+import ru.chat.DB.AuthorDAO;
+import ru.chat.DB.MessagesDAO;
+import ru.chat.custom_serialization.MessageSerializer;
+import ru.chat.models.ClientMessage;
+import ru.chat.models.ConnectNotification;
+import ru.chat.models.db_models.Author;
+import ru.chat.models.db_models.Message;
+import ru.chat.models.ServerMessage;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -32,9 +33,9 @@ public class ChatSocketHandler extends TextWebSocketHandler {
 
     // Set custom serializer for Message
     private Gson gson = new GsonBuilder().registerTypeAdapter(Message.class, new MessageSerializer()).create();
-
     // All connected sessions
     private Map<WebSocketSession, Author> sessions = new HashMap<>();
+    private final int countLastMessage = 20;
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) {}
@@ -60,8 +61,7 @@ public class ChatSocketHandler extends TextWebSocketHandler {
     public void handleTransportError(WebSocketSession session, Throwable exception) {
         try {
             session.close();
-        } catch (IOException e) {
-        }
+        } catch (IOException e) {}
     }
 
     @Override
@@ -73,15 +73,17 @@ public class ChatSocketHandler extends TextWebSocketHandler {
         try {
             clientMessageMessage = this.gson.fromJson(message.getPayload(), ClientMessage.class);
         } catch (JsonParseException e) {
+            // if fromJson be crashed, send error message
             String errorJson = this.gson.toJson(
-                    new ServerMessage(ServerMessage.COMMAND_ERROR, ServerMessage.ERROR_BAD_MESSAGE));
+                    new ServerMessage(ServerMessage.COMMAND_ERROR, ServerMessage.ERROR_BAD_MESSAGE)
+            );
             try {
                 session.sendMessage(new TextMessage(errorJson));
             } catch (IOException ioE) {}
             return;
         }
 
-        String cleanedContent = this.cleanXSS(clientMessageMessage.getContent());
+        String cleanedContent = HtmlUtils.htmlEscape(clientMessageMessage.getContent().trim());
         clientMessageMessage.setContent(cleanedContent);
 
         // Check client command
@@ -97,11 +99,14 @@ public class ChatSocketHandler extends TextWebSocketHandler {
 
     private void initNewUser(WebSocketSession session, String nickname) {
         /*
-        * Send notification about new user, send new user last 10 message and list online users
+        * Send notification about new user, send new user last this.countLastMessage message and list online users
         * */
+
+        // validate nickname
         if (nickname.length() > 30 || nickname.length() == 0) {
             String errorJson = this.gson.toJson(
-                    new ServerMessage(ServerMessage.COMMAND_ERROR, ServerMessage.ERROR_LENGTH_NICKNAME));
+                    new ServerMessage(ServerMessage.COMMAND_ERROR, ServerMessage.ERROR_LENGTH_NICKNAME)
+            );
             try {
                 session.sendMessage(new TextMessage(errorJson));
             } catch (IOException e) {}
@@ -114,11 +119,11 @@ public class ChatSocketHandler extends TextWebSocketHandler {
         this.sendAllUsers(serverMessage);
 
         // get Author or create
-        Author author = AuthorDAO.createAuthor(nickname);
+        Author author = AuthorDAO.getOrCreateAuthor(nickname);
         this.sessions.put(session, author);
 
-        // send last 20 messages
-        List<Message> messages = MessagesDAO.readMessages(20);
+        // send last this.countLastMessage messages
+        List<Message> messages = MessagesDAO.readMessages(this.countLastMessage);
         for (Message msg: messages) {
             ServerMessage newMessage = new ServerMessage(ServerMessage.COMMAND_NEW_MESSAGE, msg);
             String jsonMessages = this.gson.toJson(newMessage);
@@ -141,11 +146,14 @@ public class ChatSocketHandler extends TextWebSocketHandler {
 
     private void newMessage(WebSocketSession session, String message) {
         /*
-        * Save message and send all users
+        * Save and send message to all users
         * */
+
+        // send error if bad session
         if (!this.sessions.containsKey(session)) {
             String errorJson = this.gson.toJson(
-                    new ServerMessage(ServerMessage.COMMAND_ERROR, ServerMessage.ERROR_NOT_LOGIN_USER));
+                    new ServerMessage(ServerMessage.COMMAND_ERROR, ServerMessage.ERROR_NOT_LOGIN_USER)
+            );
             try {
                 session.sendMessage(new TextMessage(errorJson));
             } catch (IOException e) {}
@@ -173,7 +181,7 @@ public class ChatSocketHandler extends TextWebSocketHandler {
 
     private void sendAllUsers(ServerMessage message) {
         /*
-        * Send ServerMessage all online users
+        * Send some ServerMessage to all online users
         * */
 
         String json = this.gson.toJson(message);
@@ -186,17 +194,4 @@ public class ChatSocketHandler extends TextWebSocketHandler {
         }
     }
 
-    private String cleanXSS(String str) {
-        /*
-         * Protected of XSS
-         * */
-        Map<String, String> symbols = new HashMap<>();
-        symbols.put("&", "&amp;");
-        symbols.put("<", "&lt;");
-        symbols.put(">", "&gt;");
-        for (Map.Entry<String, String> symbol : symbols.entrySet()) {
-            str = str.replace(symbol.getKey(), symbol.getValue());
-        }
-        return str;
-    }
 }

@@ -1,7 +1,7 @@
-package ru.test_task.custom_serialization;
+package ru.chat.custom_serialization;
 
 import com.google.gson.*;
-import ru.test_task.models.db_models.Message;
+import ru.chat.models.db_models.Message;
 
 import java.lang.reflect.Type;
 

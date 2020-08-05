@@ -1,11 +1,11 @@
-package ru.test_task.DB;
+package ru.chat.DB;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import ru.test_task.models.db_models.Message;
+import ru.chat.models.db_models.Message;
 
 
 public class MessagesDAO {

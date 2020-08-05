@@ -1,8 +1,8 @@
-package ru.test_task.configs;
+package ru.chat.configs;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.socket.config.annotation.*;
-import ru.test_task.controllers.ChatSocketHandler;
+import ru.chat.controllers.ChatSocketHandler;
 
 
 @Configuration

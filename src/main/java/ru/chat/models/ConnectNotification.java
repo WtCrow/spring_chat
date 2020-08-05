@@ -1,4 +1,4 @@
-package ru.test_task.models;
+package ru.chat.models;
 
 
 public class ConnectNotification {

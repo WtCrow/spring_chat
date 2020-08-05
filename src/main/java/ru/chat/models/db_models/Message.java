@@ -1,4 +1,4 @@
-package ru.test_task.models.db_models;
+package ru.chat.models.db_models;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;

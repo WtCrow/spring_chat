@@ -1,4 +1,4 @@
-package ru.test_task.controllers;
+package ru.chat.controllers;
 
 
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -1,8 +1,8 @@
-package ru.test_task;
+package ru.chat;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import ru.test_task.DB.SessionFactoryUtil;
+import ru.chat.DB.SessionFactoryUtil;
 
 
 @SpringBootApplication

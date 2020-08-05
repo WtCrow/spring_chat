@@ -1,4 +1,4 @@
-package ru.test_task.DB;
+package ru.chat.DB;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;

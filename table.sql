@@ -1,6 +1,6 @@
 CREATE TABLE chat_author (
 	id serial PRIMARY KEY,
-	name VARCHAR(30) UNIQUE
+	name VARCHAR(30)
 );
 
 CREATE TABLE chat_message (
@@ -9,3 +9,5 @@ CREATE TABLE chat_message (
 	message VARCHAR(140),
 	sending_date TIMESTAMP
 );
+
+create sequence hibernate_sequence;

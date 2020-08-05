@@ -1,8 +1,8 @@
-package ru.test_task.DB;
+package ru.chat.DB;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import ru.test_task.models.db_models.Author;
+import ru.chat.models.db_models.Author;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ public class AuthorDAO {
      * --- CRUD incomplete
      * */
 
-    public static Author createAuthor(String name) {
+    public static Author getOrCreateAuthor(String name) {
         /*
         * Return Author object with name == name
         *
